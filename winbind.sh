@@ -20,30 +20,31 @@ if [[ $(id -u) -ne 0 ]] ; then echo "Please run as root" ; exit 1 ; fi
 #=================================================
 
 log_file="/var/log/join_omv_ad.log"
+backtitle="SCRIPT FOR INTEGRATING OPENMEDIAVAULT TO ACTIVE DIRECTORY"
 
 
-whiptail --title 'Bem Vindo!' 		  \
-         --backtitle 'SCRIPT DE INTEGRACAO DO OPENMEDIAVAULT AO ACTIVE DIRECTORY'	       \
-         --msgbox '\n                    Versao: 1.0\n               Autor: Eduardo Jonck\n          Email: eduardo@eduardojonck.com\n\nSeja bem vindo ao script de integracao do OpenMediaVault ao Active Diretory.\n\nNo decorrer da integracao, serao feitas algumas perguntas.\n\nExtremamente importante responde-las corretamente.
+whiptail --title 'Welcome!' 		  \
+         --backtitle "$backtitle"	       \
+         --msgbox '\n                    Version: 1.0\n               Author: Eduardo Jonck & liberodark\n          Email: eduardo@eduardojonck.com\n\nWelcome to the OpenMediaVault integration script for Active Directory.\n\nDuring the integration, some questions will be asked.\n\nExtremely important to answer them correctly.
 		\n\n\n' \
 		20 60
 
-if (whiptail --title "Atencao!!!!" \
-             --backtitle 'SCRIPT DE INTEGRACAO DO OPENMEDIAVAULT AO ACTIVE DIRECTORY - EDUARDO JONCK'	       \
-             --yes-button "Sim" --no-button "Nao" --yesno "As configuracoes abaixo devem estar ok antes de proceguir: \n\n * Endereco IP estatico ja definido; \n * Nome do servidor; \n * Configuracoes do SMB como padrao de fabrica. \n\n Tais configuracoes estao ok?" \
+if (whiptail --title "Attention!!!!" \
+             --backtitle "$backtitle"	       \
+             --yes-button "Yes" --no-button "No" --yesno "The settings below must be ok before proceeding: \n\n * Static IP address already defined; \n * Server name; \n * SMB settings as factory default. \n\n Are these settings ok?" \
 			   20 60) then
 
 
 #Testar sem o servidor tem acesso a internet para instalar os pacotes de dependencias
 clear
 echo -e "\033[01;32m##########################################################################\033[01;37m"
-echo -e "\033[01;32m## Testando comunicacao do OpenMediaVault com a Internet, aguarde....  ###\033[01;37m"
+echo -e "\033[01;32m## Testing OpenMediaVault communication with the Internet, wait....  ###\033[01;37m"
 echo -e "\033[01;32m##########################################################################\033[01;37m"
 ping -q -c3 google.com &>/dev/null
 
 if [ $? -eq 0 ] ; then
 
-        whiptail --title "Teste de Comunicacao com a Internet" \
+        whiptail --title "Internet Communication Test" \
 				 --backtitle 'SCRIPT DE INTEGRACAO DO OPENMEDIAVAULT AO ACTIVE DIRECTORY - EDUARDO JONCK'	       \
                  --msgbox "O servidor OpenMediaVault tem acesso a internet, pressione OK para prosseguir." \
 				 --fb 10 50
@@ -51,7 +52,7 @@ if [ $? -eq 0 ] ; then
 else
 		
         whiptail --title "Teste de Comunicacao com a Internet" \
-				 --backtitle 'SCRIPT DE INTEGRACAO DO OPENMEDIAVAULT AO ACTIVE DIRECTORY - EDUARDO JONCK'	       \
+				 --backtitle "$backtitle"	       \
                  --msgbox "O servidor OpenMediaVault esta sem acesso a internet. Revise as configuracoes de rede e execute novamente esse script." \
 				 --fb 20 50
   exit
