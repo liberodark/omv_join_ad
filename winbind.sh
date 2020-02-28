@@ -1,12 +1,26 @@
 #!/bin/bash
-### Script de integração do OpenMediaVault ao Active Directory Microsoft ou SAMBA 4 ####
-#Autor: Eduardo Jonck
-#Email: eduardo@eduardojonck.com
-#Data: 24/02/2020
-#Versão: 1.0
+#
+# About: OpenMediaVault integration script for Microsoft Active Directory or SAMBA 4
+# Author: Eduardo Jonck, liberodark
+# Thanks : 
+# License: GNU GPLv3
 
-#Arquivo de log
+version="1.0"
+
+echo "Welcome on OMV Join AD Script $version"
+
+#=================================================
+# CHECK ROOT
+#=================================================
+
+if [[ $(id -u) -ne 0 ]] ; then echo "Please run as root" ; exit 1 ; fi
+
+#=================================================
+# RETRIEVE ARGUMENTS FROM THE MANIFEST AND VAR
+#=================================================
+
 log_file="/var/log/join_omv_ad.log"
+
 
 whiptail --title 'Bem Vindo!' 		  \
          --backtitle 'SCRIPT DE INTEGRACAO DO OPENMEDIAVAULT AO ACTIVE DIRECTORY'	       \
@@ -102,7 +116,7 @@ clear
 echo -e "\033[01;32m###################################################################\033[01;37m"
 echo -e "\033[01;32m## Testando o PING no IP do servidor AD informado, aguarde....  ###\033[01;37m"
 echo -e "\033[01;32m###################################################################\033[01;37m"
-ping -q -c3 $ip_srv_ad &>/dev/null
+ping -q -c3 "$ip_srv_ad" &>/dev/null
 
 if [ $? -eq 0 ] ; then
 
@@ -130,24 +144,24 @@ while [ ${#ip_srv_omv} = 0 ]; do
 
 #Alterar nome do arquivo /etc/hostname sem o dominio
 change_hostname_samba=$(cat /etc/hostname |cut -d '.' -f 1)
-echo $change_hostname_samba > /etc/hostname
+echo "$change_hostname_samba" > /etc/hostname
 
 #Coleta novo hostname
 hostname_samba=$(cat /etc/hostname)
-netbios_dc=$(echo $dominio_ad |cut -d '.' -f 1)
+netbios_dc=$(echo "$dominio_ad" |cut -d '.' -f 1)
 
 
 #Apontamento de nomes diretamente no arquivo hosts
-echo $ip_srv_omv   ${hostname_samba,,}   ${hostname_samba,,}.${dominio_ad,,} > /etc/hosts
-echo $ip_srv_ad   ${hostname_ad,,}   ${hostname_ad,,}.${dominio_ad,,} >> /etc/hosts
+echo "$ip_srv_omv"   "${hostname_samba,,}"   "${hostname_samba,,}"."${dominio_ad,,}" > /etc/hosts
+echo "$ip_srv_ad"   "${hostname_ad,,}"   "${hostname_ad,,}"."${dominio_ad,,}" >> /etc/hosts
 
 #Ajusta os dominios no resolv.conf
 if [ ! -f /etc/resolv.conf.bkp ]; then
 cp /etc/resolv.conf /etc/resolv.conf.bkp
 fi
 
-echo search $dominio_ad > /etc/resolv.conf
-echo nameserver $ip_srv_ad >> /etc/resolv.conf
+echo search "$dominio_ad" > /etc/resolv.conf
+echo nameserver "$ip_srv_ad" >> /etc/resolv.conf
 echo nameserver 208.67.222.222 >> /etc/resolv.conf
 echo nameserver 8.8.8.8 >> /etc/resolv.conf
 
@@ -214,7 +228,7 @@ while [ $c -ne 15 ]
         sleep 1
 
 
-echo $c
+echo "$c"
         echo "###"
         echo "$c %"
         echo "###"
@@ -299,7 +313,7 @@ clear
 echo -e "\033[01;32m#####################################################################\033[01;37m"
 echo -e "\033[01;32m## Testando o PING no nome do servidor AD informado, aguarde.... ####\033[01;37m"
 echo -e "\033[01;32m#####################################################################\033[01;37m"
-ping -q -c3 ${hostname_ad,,}.${dominio_ad,,} &>/dev/null
+ping -q -c3 "${hostname_ad,,}"."${dominio_ad,,}" &>/dev/null
 
 if [ $? -eq 0 ] ; then
 
@@ -344,9 +358,9 @@ while [ $c -ne 20 ]
         echo "###"
         ((c+=30))
         sleep 1
-        net ads join -U$admin_user%$admin_pass --request-timeout 10 &>/dev/null
+        net ads join -U"$admin_user"%"$admin_pass" --request-timeout 10 &>/dev/null
 
-echo $c
+echo "$c"
         echo "###"
         echo "$c %"
         echo "###"
@@ -354,7 +368,7 @@ echo $c
         sleep 1
 		systemctl restart smbd && systemctl restart nmbd &>/dev/null
 		
-echo $c
+echo "$c"
         echo "###"
         echo "$c %"
         echo "###"
@@ -378,7 +392,7 @@ echo -e "\033[01;32m############################################################
 sleep 5
 testjoin=$(net ads testjoin | cut -f3 -d " ")
 
-if  [ $testjoin = OK ] ; then
+if  [ "$testjoin" = OK ] ; then
         whiptail --title "Teste de Integracao" \
 				 --backtitle 'SCRIPT DE INTEGRACAO DO OPENMEDIAVAULT AO ACTIVE DIRECTORY - EDUARDO JONCK'	       \
                  --msgbox "Integracao dos servidores realizada com sucesso.\n\nPressione OK para sar." \
