@@ -23,9 +23,7 @@ echo "Enter the domain name Ex. EXAMPLE.LOCAL: " ; read DOMAIN
 echo "Enter the name of your Domain Controller Ex. dc01.example.local: " ; read DC
 echo "Inform the user that will be used as Domain Admin to join the domain: " ; read DOMAINUSER
 # Install required packages
-apt-get update
-apt-get dist-upgrade -y
-apt-get install krb5-user krb5-config winbind samba samba-common smbclient cifs-utils libpam-krb5 libpam-winbind libnss-winbind
+apt-get install -y krb5-user krb5-config winbind samba samba-common smbclient cifs-utils libpam-krb5 libpam-winbind libnss-winbind
 
 # Backup Kerberos file
 cp /etc/krb5.conf /etc/krb5.conf.ori
