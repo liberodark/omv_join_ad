@@ -287,7 +287,7 @@ sed -i "$line_edit d" /etc/openmediavault/config.xml &>/dev/null
 tac /tmp/smb.tmpl > /tmp/smb.extra
 
 #Escreve as linhas do SMB customizado dentro do arquivo config.xml na tag <extraoptions> do samba
-while read linha
+while read -r linha
 do
 sed  -i "/homesbrowseable/a ${linha}" /etc/openmediavault/config.xml &>/dev/null
 done < /tmp/smb.extra
