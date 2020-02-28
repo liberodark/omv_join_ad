@@ -1,8 +1,23 @@
 #!/bin/bash
-# Criado: Tácio de Jesus Andrade - tacio@multiti.com.br
-# Data: 22-12-2019
-# Função: Script que Integra o OpenMediaVault 3, 4 ou 5 no Domínio
-# Informações: Antes de executar esse script verifique se o DNS server é o Domain Controller e se pinga para o dominio.local 
+#
+# About: OpenMediaVault integration script for Microsoft Active Directory or SAMBA 4
+# Author: Eduardo Jonck, liberodark
+# Thanks : Jesus Andrade
+# License: GNU GPLv3
+
+version="1.0"
+
+echo "Welcome on OMV Join AD Script $version"
+
+#=================================================
+# CHECK ROOT
+#=================================================
+
+if [[ $(id -u) -ne 0 ]] ; then echo "Please run as root" ; exit 1 ; fi
+
+#=================================================
+# RETRIEVE ARGUMENTS FROM THE MANIFEST AND VAR
+#=================================================
 
 echo "Enter the domain name Ex. EXAMPLE.LOCAL: " ; read DOMAIN
 echo "Enter the name of your Domain Controller Ex. dc01.example.local: " ; read DC
