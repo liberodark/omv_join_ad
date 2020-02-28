@@ -88,7 +88,7 @@ whiptail --title "Instalacao das dependencias" \
 
 
 hostname_ad=$(whiptail --title "Informacao do nome do Servidor Active Directory" \
-                       --backtitle 'SCRIPT DE INTEGRACAO DO OPENMEDIAVAULT AO ACTIVE DIRECTORY'	\
+                       --backtitle "$backtitle"	\
                        --inputbox "Digite o nome do servidor do active Directory.\n\nEx: servidor-ad" \
 					   --fb 15 60 3>&1 1>&2 2>&3)
 while [ ${#hostname_ad} = 0 ]; do
@@ -96,7 +96,7 @@ while [ ${#hostname_ad} = 0 ]; do
        done
 
 ip_srv_ad=$(whiptail --title "Informar IP do Servidor AD" \
-                     --backtitle 'SCRIPT DE INTEGRACAO DO OPENMEDIAVAULT AO ACTIVE DIRECTORY' \
+                     --backtitle "$backtitle" \
                      --inputbox "Digite o endereco IP do servidor Active Directory\n\nEx:192.168.1.250" \
  					 --fb 15 60 3>&1 1>&2 2>&3)
 while [ ${#ip_srv_ad} = 0 ]; do
@@ -104,7 +104,7 @@ while [ ${#ip_srv_ad} = 0 ]; do
        done
 
 dominio_ad=$(whiptail --title "Configuracao do Dominio para a Integracao" \
-                      --backtitle 'SCRIPT DE INTEGRACAO DO OPENMEDIAVAULT AO ACTIVE DIRECTORY'	       \
+                      --backtitle "$backtitle" \
                       --inputbox "Digite o dominio configurado atualmente no Active Directory.\n\nEx: dominio.local" \
  					  --fb 15 60 3>&1 1>&2 2>&3)
 while [ ${#dominio_ad} = 0 ]; do
@@ -122,13 +122,13 @@ ping -q -c3 "$ip_srv_ad" &>/dev/null
 if [ $? -eq 0 ] ; then
 
         whiptail --title "Teste de Comunicacao (PING)" \
-				 --backtitle 'SCRIPT DE INTEGRACAO DO OPENMEDIAVAULT AO ACTIVE DIRECTORY'	       \
+				 --backtitle "$backtitle" \
                  --msgbox "O PING no endereco IP do servidor AD foi bem sucessido, pressione OK para prosseguir." \
  				 --fb 10 50
 else
 
         whiptail --title "Teste de Comunicacao (PING)" \
-		         --backtitle 'SCRIPT DE INTEGRACAO DO OPENMEDIAVAULT AO ACTIVE DIRECTORY'	       \
+		         --backtitle "$backtitle" \
                  --msgbox "O PING no endereco IP do servidor AD nao foi possivel. Revise as configuracoes de rede e execute novamente esse script." \
 				 --fb 20 50
   exit
@@ -136,7 +136,7 @@ fi
 
 #Coleta dados do servidor OMV
 ip_srv_omv=$(whiptail --title "Informacao do IP do OpenMediaVault" \
-                      --backtitle 'SCRIPT DE INTEGRACAO DO OPENMEDIAVAULT AO ACTIVE DIRECTORY'	       \
+                      --backtitle "$backtitle" \
                       --inputbox "Qual endereco IP do OpenMediaVault que voce deseja se comunicar com o AD?:" \
    					  --fb 10 60 3>&1 1>&2 2>&3)
 while [ ${#ip_srv_omv} = 0 ]; do
@@ -241,7 +241,7 @@ break
 done
 ) |
 whiptail --title "Sincronizar data e hora entre os servidores" \
-         --backtitle 'SCRIPT DE INTEGRACAO DO OPENMEDIAVAULT AO ACTIVE DIRECTORY'	       \
+         --backtitle "$backtitle" \
          --gauge "Sincronizando data e hora entre os servidores. Aguarde...." 10 60 0
 
 #Faz backup do arquivo config.xml original
@@ -319,13 +319,13 @@ ping -q -c3 "${hostname_ad,,}"."${dominio_ad,,}" &>/dev/null
 if [ $? -eq 0 ] ; then
 
         whiptail --title "Teste de Comunicacao de (DNS)" \
-		         --backtitle 'SCRIPT DE INTEGRACAO DO OPENMEDIAVAULT AO ACTIVE DIRECTORY'	       \
+		         --backtitle "$backtitle" \
                  --msgbox "O PING no nome do servidor AD foi bem sucessido, pressione OK para prosseguir." \
  				 --fb 10 50
 else
 
         whiptail --title "Teste de Comunicacao de (DNS)" \
-		         --backtitle 'SCRIPT DE INTEGRACAO DO OPENMEDIAVAULT AO ACTIVE DIRECTORY'	       \
+		         --backtitle "$backtitle" \
                  --msgbox "O PING no nome do servidor AD nao foi possivel. Revise as configuracoes de rede e execute novamente o script." \
 				 --fb 20 50
      exit
@@ -333,7 +333,7 @@ fi
 
 #Informa a Senha do usario com direitos de administrador
 admin_user=$(whiptail --title "Usuario do Active Directory" \
-                      --backtitle 'SCRIPT DE INTEGRACAO DO OPENMEDIAVAULT AO ACTIVE DIRECTORY'	       \
+                      --backtitle "$backtitle" \
                       --inputbox "Informe o usuario com direitos de Administrador do Active Directory:" \
  					  --fb 10 60 3>&1 1>&2 2>&3)
 while [ ${#admin_user} = 0 ]; do
@@ -342,7 +342,7 @@ while [ ${#admin_user} = 0 ]; do
 
 #Informa a Senha do usuário com direitos de administrador
 admin_pass=$(whiptail --title "Senha do usuario do Active Directory" \
-                      --backtitle 'SCRIPT DE INTEGRACAO DO OPENMEDIAVAULT AO ACTIVE DIRECTORY'	       \
+                      --backtitle "$backtitle" \
                       --passwordbox "Digite a senha do usuario:" \
 					  --fb 10 60 3>&1 1>&2 2>&3)
 while [ ${#admin_pass} = 0 ]; do
@@ -381,7 +381,7 @@ break
 done
 ) |
 whiptail --title "Integracao dos Servidores" \
-         --backtitle "SCRIPT DE INTEGRACAO DO OPENMEDIAVAULT AO ACTIVE DIRECTORY"	       \
+         ---backtitle "$backtitle" \
          --gauge "Aguarde os servidores serem integrados e sincronizados ...." 10 60 0 
 
 
@@ -395,7 +395,7 @@ testjoin=$(net ads testjoin | cut -f3 -d " ")
 
 if  [ "$testjoin" = OK ] ; then
         whiptail --title "Teste de Integracao" \
-				 --backtitle 'SCRIPT DE INTEGRACAO DO OPENMEDIAVAULT AO ACTIVE DIRECTORY - EDUARDO JONCK'	       \
+		 --backtitle "$backtitle" \
                  --msgbox "Integracao dos servidores realizada com sucesso.\n\nPressione OK para sar." \
 				 --fb 20 50
 		clear
@@ -403,7 +403,7 @@ if  [ "$testjoin" = OK ] ; then
 else
 
         whiptail --title "Teste de Integracao" \
-			     --backtitle 'SCRIPT DE INTEGRACAO DO OPENMEDIAVAULT AO ACTIVE DIRECTORY'	       \
+			 --backtitle "$backtitle" \
 		         --msgbox "A integracao dos servidores falhou. Favor executar o script novamente e revise suas respostas." \
 				 --fb 20 50
   exit
