@@ -75,7 +75,8 @@ if [ -f /etc/krb5.conf ];
         then
                 echo
         else
-        DEBIAN_FRONTEND=noninteractive apt-get -yq install ntpdate krb5-user krb5-config winbind samba samba-common smbclient cifs-utils libpam-krb5 libpam-winbind libnss-winbind > $log_file 2>/dev/null
+	export DEBIAN_FRONTEND=noninteractive
+        apt-get -yq install ntpdate krb5-user krb5-config winbind samba samba-common smbclient cifs-utils libpam-krb5 libpam-winbind libnss-winbind > $log_file 2>/dev/null
         fi
 
 break
