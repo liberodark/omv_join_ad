@@ -19,7 +19,7 @@ if [[ $(id -u) -ne 0 ]] ; then echo "Please run as root" ; exit 1 ; fi
 # RETRIEVE ARGUMENTS FROM THE MANIFEST AND VAR
 #=================================================
 
-log_file="/var/log/join_omv_ad.log"
+log_file="/var/log/join_ad.log"
 backtitle="SCRIPT FOR INTEGRATING OPENMEDIAVAULT TO ACTIVE DIRECTORY"
 
 
@@ -150,7 +150,6 @@ echo "$change_hostname_samba" > /etc/hostname
 #Coleta novo hostname
 hostname_samba=$(cat /etc/hostname)
 netbios_dc=$(echo "$dominio_ad" |cut -d '.' -f 1)
-
 
 #Apontamento de nomes diretamente no arquivo hosts
 echo "$ip_srv_omv"   "${hostname_samba,,}"   "${hostname_samba,,}"."${dominio_ad,,}" > /etc/hosts
