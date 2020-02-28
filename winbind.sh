@@ -46,14 +46,14 @@ if [ $? -eq 0 ] ; then
 
         whiptail --title "Internet Communication Test" \
 				 --backtitle "$backtitle" \
-                 --msgbox "O servidor OpenMediaVault tem acesso a internet, pressione OK para prosseguir." \
+                 --msgbox "The OpenMediaVault server has internet access, press OK to proceed." \
 				 --fb 10 50
 
 else
 		
-        whiptail --title "Teste de Comunicacao com a Internet" \
+        whiptail --title "Internet Communication Test" \
 				 --backtitle "$backtitle" \
-                 --msgbox "O servidor OpenMediaVault esta sem acesso a internet. Revise as configuracoes de rede e execute novamente esse script." \
+                 --msgbox "The OpenMediaVault server is without internet access. Review the network settings and run this script again." \
 				 --fb 20 50
   exit
 fi
@@ -81,31 +81,31 @@ if [ -f /etc/krb5.conf ];
 break
 done
 ) |
-whiptail --title "Instalacao das dependencias" \
+whiptail --title "Installation of dependencies" \
          --backtitle "$backtitle" \
-         --gauge "Aguarde a instalacao das dependencias ...." 10 60 0
+         --gauge "Wait for the installation of the dependencies ...." 10 60 0
 
 
 
-hostname_ad=$(whiptail --title "Informacao do nome do Servidor Active Directory" \
+hostname_ad=$(whiptail --title "Active Directory Server name information" \
                        --backtitle "$backtitle"	\
-                       --inputbox "Digite o nome do servidor do active Directory.\n\nEx: servidor-ad" \
+                       --inputbox "Enter the name of the Active Directory server.\n\nEx: ad-server" \
 					   --fb 15 60 3>&1 1>&2 2>&3)
 while [ ${#hostname_ad} = 0 ]; do
 [ $? -ne 0 ] & exit
        done
 
-ip_srv_ad=$(whiptail --title "Informar IP do Servidor AD" \
+ip_srv_ad=$(whiptail --title "Inform AD Server IP" \
                      --backtitle "$backtitle" \
-                     --inputbox "Digite o endereco IP do servidor Active Directory\n\nEx:192.168.1.250" \
+                     --inputbox "Enter the IP address of the Active Directory server\n\nEx:192.168.1.250" \
  					 --fb 15 60 3>&1 1>&2 2>&3)
 while [ ${#ip_srv_ad} = 0 ]; do
 [ $? -ne 0 ] & exit
        done
 
-dominio_ad=$(whiptail --title "Configuracao do Dominio para a Integracao" \
+dominio_ad=$(whiptail --title "Domain Configuration for Integration" \
                       --backtitle "$backtitle" \
-                      --inputbox "Digite o dominio configurado atualmente no Active Directory.\n\nEx: dominio.local" \
+                      --inputbox "Enter the domain currently configured in Active Directory.\n\nEx: domain.local" \
  					  --fb 15 60 3>&1 1>&2 2>&3)
 while [ ${#dominio_ad} = 0 ]; do
 [ $? -ne 0 ] & exit
@@ -115,29 +115,29 @@ while [ ${#dominio_ad} = 0 ]; do
 #Inicia teste de comunicacao entre os servers (PING no IP)
 clear
 echo -e "\033[01;32m###################################################################\033[01;37m"
-echo -e "\033[01;32m## Testando o PING no IP do servidor AD informado, aguarde....  ###\033[01;37m"
+echo -e "\033[01;32m## Testing the PING on the IP of the informed AD server, wait....  ###\033[01;37m"
 echo -e "\033[01;32m###################################################################\033[01;37m"
 ping -q -c3 "$ip_srv_ad" &>/dev/null
 
 if [ $? -eq 0 ] ; then
 
-        whiptail --title "Teste de Comunicacao (PING)" \
+        whiptail --title "Communication Test (PING)" \
 				 --backtitle "$backtitle" \
-                 --msgbox "O PING no endereco IP do servidor AD foi bem sucessido, pressione OK para prosseguir." \
+                 --msgbox "The PING on the IP address of the AD server was successful, press OK to proceed." \
  				 --fb 10 50
 else
 
-        whiptail --title "Teste de Comunicacao (PING)" \
+        whiptail --title "Communication Test (PING)" \
 		         --backtitle "$backtitle" \
-                 --msgbox "O PING no endereco IP do servidor AD nao foi possivel. Revise as configuracoes de rede e execute novamente esse script." \
+                 --msgbox "PING at the IP address of the AD server was not possible. Review the network settings and run this script again." \
 				 --fb 20 50
   exit
 fi
 
 #Coleta dados do servidor OMV
-ip_srv_omv=$(whiptail --title "Informacao do IP do OpenMediaVault" \
+ip_srv_omv=$(whiptail --title "OpenMediaVault IP information" \
                       --backtitle "$backtitle" \
-                      --inputbox "Qual endereco IP do OpenMediaVault que voce deseja se comunicar com o AD?:" \
+                      --inputbox "Which OpenMediaVault IP address do you want to communicate with AD?:" \
    					  --fb 10 60 3>&1 1>&2 2>&3)
 while [ ${#ip_srv_omv} = 0 ]; do
 [ $? -ne 0 ] & exit
@@ -240,9 +240,9 @@ echo "$c"
 break
 done
 ) |
-whiptail --title "Sincronizar data e hora entre os servidores" \
+whiptail --title "Synchronize date and time between servers" \
          --backtitle "$backtitle" \
-         --gauge "Sincronizando data e hora entre os servidores. Aguarde...." 10 60 0
+         --gauge "Synchronizing date and time between servers. Wait...." 10 60 0
 
 #Faz backup do arquivo config.xml original
 if  [ ! -f /etc/openmediavault/config.xml.bkp ]; then
@@ -312,38 +312,38 @@ omv-salt deploy run samba &>/dev/null
 #Inicia teste de comunicacao entre os servers (PING no DNS)
 clear
 echo -e "\033[01;32m#####################################################################\033[01;37m"
-echo -e "\033[01;32m## Testando o PING no nome do servidor AD informado, aguarde.... ####\033[01;37m"
+echo -e "\033[01;32m## Testing the PING on the name of the informed AD server, wait.... ####\033[01;37m"
 echo -e "\033[01;32m#####################################################################\033[01;37m"
 ping -q -c3 "${hostname_ad,,}"."${dominio_ad,,}" &>/dev/null
 
 if [ $? -eq 0 ] ; then
 
-        whiptail --title "Teste de Comunicacao de (DNS)" \
+        whiptail --title "DNS Communication Test" \
 		         --backtitle "$backtitle" \
-                 --msgbox "O PING no nome do servidor AD foi bem sucessido, pressione OK para prosseguir." \
+                 --msgbox "The PING on the AD server name was successful, press OK to proceed." \
  				 --fb 10 50
 else
 
-        whiptail --title "Teste de Comunicacao de (DNS)" \
+        whiptail --title "DNS Communication Test" \
 		         --backtitle "$backtitle" \
-                 --msgbox "O PING no nome do servidor AD nao foi possivel. Revise as configuracoes de rede e execute novamente o script." \
+                 --msgbox "PING in the name of the AD server was not possible. Review the network settings and run the script again." \
 				 --fb 20 50
      exit
 fi
 
 #Informa a Senha do usario com direitos de administrador
-admin_user=$(whiptail --title "Usuario do Active Directory" \
+admin_user=$(whiptail --title "Active Directory user" \
                       --backtitle "$backtitle" \
-                      --inputbox "Informe o usuario com direitos de Administrador do Active Directory:" \
+                      --inputbox "Inform the user with Active Directory Administrator rights:" \
  					  --fb 10 60 3>&1 1>&2 2>&3)
 while [ ${#admin_user} = 0 ]; do
 [ $? -ne 0 ] & exit
        done
 
 #Informa a Senha do usuário com direitos de administrador
-admin_pass=$(whiptail --title "Senha do usuario do Active Directory" \
+admin_pass=$(whiptail --title "Active Directory user password" \
                       --backtitle "$backtitle" \
-                      --passwordbox "Digite a senha do usuario:" \
+                      --passwordbox "Enter user password:" \
 					  --fb 10 60 3>&1 1>&2 2>&3)
 while [ ${#admin_pass} = 0 ]; do
 [ $? -ne 0 ] & exit
@@ -380,31 +380,31 @@ echo "$c"
 break
 done
 ) |
-whiptail --title "Integracao dos Servidores" \
+whiptail --title "Server Integration" \
          ---backtitle "$backtitle" \
-         --gauge "Aguarde os servidores serem integrados e sincronizados ...." 10 60 0 
+         --gauge "Wait for the servers to be integrated and synchronized ...." 10 60 0 
 
 
 #Inicia teste da Integracao
 clear
 echo -e "\033[01;32m############################################################\033[01;37m"
-echo -e "\033[01;32m### Testando a integracao dos servidores, aguarde......  ###\033[01;37m"
+echo -e "\033[01;32m### Testing the server integration, wait......  ###\033[01;37m"
 echo -e "\033[01;32m############################################################\033[01;37m"
 sleep 5
 testjoin=$(net ads testjoin | cut -f3 -d " ")
 
 if  [ "$testjoin" = OK ] ; then
-        whiptail --title "Teste de Integracao" \
+        whiptail --title "Integration Test" \
 		 --backtitle "$backtitle" \
-                 --msgbox "Integracao dos servidores realizada com sucesso.\n\nPressione OK para sar." \
+                 --msgbox "Server integration performed successfully.\n\nPress OK to quit." \
 				 --fb 20 50
 		clear
 		systemctl restart openmediavault-engined
 else
 
-        whiptail --title "Teste de Integracao" \
+        whiptail --title "Integration Test" \
 			 --backtitle "$backtitle" \
-		         --msgbox "A integracao dos servidores falhou. Favor executar o script novamente e revise suas respostas." \
+		         --msgbox "The integration of the servers failed. Please run the script again and review your responses." \
 				 --fb 20 50
   exit
 fi
