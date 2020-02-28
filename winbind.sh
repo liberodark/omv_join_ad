@@ -367,7 +367,7 @@ echo "$c"
         echo "###"
         ((c+=60))
         sleep 1
-		systemctl restart smbd && systemctl restart nmbd &>/dev/null
+	systemctl restart smbd && systemctl restart nmbd &>/dev/null
 		
 echo "$c"
         echo "###"
@@ -375,7 +375,7 @@ echo "$c"
         echo "###"
         ((c+=80))
         sleep 1
-		/etc/init.d/winbind restart &>/dev/null
+	systemctl restart winbind &>/dev/null
 	
 break
 done
