@@ -23,14 +23,14 @@ log_file="/var/log/join_omv_ad.log"
 backtitle="SCRIPT FOR INTEGRATING OPENMEDIAVAULT TO ACTIVE DIRECTORY"
 
 
-whiptail --title 'Welcome!' 		  \
-         --backtitle "$backtitle"	       \
+whiptail --title 'Welcome!' \
+         --backtitle "$backtitle" \
          --msgbox '\n                    Version: 1.0\n               Author: Eduardo Jonck & liberodark\n          Email: eduardo@eduardojonck.com\n\nWelcome to the OpenMediaVault integration script for Active Directory.\n\nDuring the integration, some questions will be asked.\n\nExtremely important to answer them correctly.
 		\n\n\n' \
 		20 60
 
 if (whiptail --title "Attention!!!!" \
-             --backtitle "$backtitle"	       \
+             --backtitle "$backtitle" \
              --yes-button "Yes" --no-button "No" --yesno "The settings below must be ok before proceeding: \n\n * Static IP address already defined; \n * Server name; \n * SMB settings as factory default. \n\n Are these settings ok?" \
 			   20 60) then
 
@@ -45,14 +45,14 @@ ping -q -c3 google.com &>/dev/null
 if [ $? -eq 0 ] ; then
 
         whiptail --title "Internet Communication Test" \
-				 --backtitle 'SCRIPT DE INTEGRACAO DO OPENMEDIAVAULT AO ACTIVE DIRECTORY - EDUARDO JONCK'	       \
+				 --backtitle "$backtitle" \
                  --msgbox "O servidor OpenMediaVault tem acesso a internet, pressione OK para prosseguir." \
 				 --fb 10 50
 
 else
 		
         whiptail --title "Teste de Comunicacao com a Internet" \
-				 --backtitle "$backtitle"	       \
+				 --backtitle "$backtitle" \
                  --msgbox "O servidor OpenMediaVault esta sem acesso a internet. Revise as configuracoes de rede e execute novamente esse script." \
 				 --fb 20 50
   exit
@@ -82,7 +82,7 @@ break
 done
 ) |
 whiptail --title "Instalacao das dependencias" \
-         --backtitle 'SCRIPT DE INTEGRACAO DO OPENMEDIAVAULT AO ACTIVE DIRECTORY'	       \
+         --backtitle "$backtitle" \
          --gauge "Aguarde a instalacao das dependencias ...." 10 60 0
 
 
