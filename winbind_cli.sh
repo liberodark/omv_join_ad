@@ -19,9 +19,9 @@ if [[ $(id -u) -ne 0 ]] ; then echo "Please run as root" ; exit 1 ; fi
 # RETRIEVE ARGUMENTS FROM THE MANIFEST AND VAR
 #=================================================
 
-echo "Enter the domain name Ex. EXAMPLE.LOCAL: " ; read DOMAIN
-echo "Enter the name of your Domain Controller Ex. dc01.example.local: " ; read DC
-echo "Inform the user that will be used as Domain Admin to join the domain: " ; read DOMAINUSER
+echo "Enter the domain name Ex. EXAMPLE.LOCAL: " ; read -r DOMAIN
+echo "Enter the name of your Domain Controller Ex. dc01.example.local: " ; read -r DC
+echo "Inform the user that will be used as Domain Admin to join the domain: " ; read -r DOMAINUSER
 # Install required packages
 apt-get install -y krb5-user krb5-config winbind samba samba-common smbclient cifs-utils libpam-krb5 libpam-winbind libnss-winbind
 
@@ -114,7 +114,7 @@ cat /tmp/smb.tmp
 echo "
 
 
-After making the change, type Enter: " ; read ENTER
+After making the change, type Enter: " ; read -r ENTER
 
 # Integrates with the domain
 echo "
