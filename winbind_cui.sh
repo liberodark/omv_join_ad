@@ -381,7 +381,7 @@ break
 done
 ) |
 whiptail --title "Server Integration" \
-         ---backtitle "$backtitle" \
+         --backtitle "$backtitle" \
          --gauge "Wait for the servers to be integrated and synchronized ...." 10 60 0 
 
 
